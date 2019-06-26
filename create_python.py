@@ -1,7 +1,7 @@
 from random import randint, seed
 import time
 class SkipNode:
-	def __init__(self, height = 0, elem = None ,key = None ,url = None ,title = None ,content = None ,viewCount = None ,res = None ):
+	def __init__(self, height = 0, elem = None ,key = None ,url = None ,title = None ,content = None ,viewCount = None ,res = None ,duration = None ):
 		self.next = [None]*height
 		self.elem = elem
 		self.key = key
@@ -10,6 +10,7 @@ class SkipNode:
 		self.content = content
 		self.viewCount = viewCount
 		self.res = res
+		self.duration = duration
 class SkipList:
 	def __init__(self):
 		self.head = SkipNode()
@@ -64,8 +65,8 @@ class SkipList:
 			update[i] = x
 		return update
 
-	def insert(self, elem, key,url = None ,title = None ,content = None ,viewCount = None ,res = None ):
-		node = SkipNode(self.randomHeight(), elem, key ,url ,title ,content ,viewCount ,res )
+	def insert(self, elem, key,url = None ,title = None ,content = None ,viewCount = None ,res = None ,duration = None ):
+		node = SkipNode(self.randomHeight(), elem, key ,url ,title ,content ,viewCount ,res ,duration )
 		self.maxHeight = max(self.maxHeight, len(node.next))
 		while len(self.head.next) < len(node.next):
 			self.head.next.append(None)

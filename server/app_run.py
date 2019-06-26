@@ -67,6 +67,7 @@ sSkipList = None
 @cross_origin()
 def get_All_place(file_name,table_name,tile1,tile2,tile3,tile4,tile5,tile6,tile7,tile8):
     global title_data
+    title_data = []
     if tile1 != "NULL":
         title_data.append(tile1)
     if tile2 != "NULL":
@@ -95,7 +96,8 @@ def get_All_place(file_name,table_name,tile1,tile2,tile3,tile4,tile5,tile6,tile7
     data = input_python.input_main(file_name)
     print(len(data))
     sSkipList = input_python.url_index_DB(data)
-    return "OK,success"
+    ans_data = "OK,GOOD"
+    return json.dumps(ans_data, ensure_ascii=False).encode('utf8')
     # return json.dumps(ans, ensure_ascii=False).encode('utf8')
 
 #查詢
@@ -125,7 +127,7 @@ def get_search(file_name,table_name,table_title,keyword,page_number=None):
         All_sSkipList = sSkipList.get_ALL()
         tmp_data = get_find_full(All_sSkipList,keyword)
         page_number = int(page_number)
-        ans_data.append(len(tmp_data))
+        # ans_data.append(len(tmp_data))
         if(len(tmp_data)<10):
             for i in range(0,len(tmp_data)):
                 tmp = get_list_url_data(tmp_data[i])
@@ -141,6 +143,9 @@ def get_search(file_name,table_name,table_title,keyword,page_number=None):
 @cross_origin()
 def get_input_title():
     global title_data
+    if(len(title_data)<8):
+        for line in range(0,8-len(title_data)):
+            title_data.append("NULL")
     return json.dumps(title_data, ensure_ascii=False).encode('utf8')
 
 
@@ -152,21 +157,28 @@ def get_input(file_name,table_name,tile1,tile2,tile3,tile4,tile5,tile6,tile7,til
     global sSkipList
     count = randint(1, 100)
     tile1 = "@url:https://www.youtube.com/watch?v={}\n".format(tile1)
-    if(len(title_data)==2):
+    if(tile3=="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2)
-    if(len(title_data)==3):
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    if(tile4=="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2,tile3)
-    if(len(title_data)==4):
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    if(tile5=="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2,tile3,tile4)
-    if(len(title_data)==5):
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    if(tile6=="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2,tile3,tile4,tile5)
-    if(len(title_data)==6):
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    if(tile7=="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2,tile3,tile4,tile5,tile6)
-    if(len(title_data)==7):
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    if(tile8=="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2,tile3,tile4,tile5,tile6,tile7)
-    if(len(title_data)==8):
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    if(tile8!="NULL"):
         sSkipList.insert(tile1,"DB_{}.txt".format(count),tile1,tile2,tile3,tile4,tile5,tile6,tile7,tile8)
-    return "OK,{}".format(tile1)
+        return json.dumps("OK,{}".format(tile1), ensure_ascii=False).encode('utf8')
+    return json.dumps("ERROR,{}".format(tile1), ensure_ascii=False).encode('utf8')
 
 #刪除
 @app.route("/delete/<file_name>/<table_name>/<tile1>", methods=['GET'])
@@ -180,5 +192,5 @@ def get_delete(file_name,table_name,tile1):
     return "OK,remove:{}".format(tile1)
 #main
 if __name__ == "__main__":
-    app.run(threaded=True, debug=True, port=5000)
+    app.run(threaded=True, debug=True, port=8080)
     CORS(app)

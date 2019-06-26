@@ -1,10 +1,10 @@
 import time
 import create_python
 def get_dd():
-	dd = {"@url:" : 0,"@title:" : 0,"@content:" : 0,"@viewCount:" : 0,"@res:" : 0,"@end" : 1 }
+	dd = {"@url:" : 0,"@title:" : 0,"@content:" : 0,"@viewCount:" : 0,"@res:" : 0,"@duration:" : 0,"@end" : 1 }
 	return dd
 def get_ddc():
-	dd = {"@url:" : "","@title:" : "","@content:" : "","@viewCount:" : "","@res:" : "","@end" : "" }
+	dd = {"@url:" : "","@title:" : "","@content:" : "","@viewCount:" : "","@res:" : "","@duration:" : "","@end" : "" }
 	return dd
 def get_bool(dd):
 	for i in dd:
@@ -54,6 +54,10 @@ def input_main(file_path):
 				if(line.find("@res:")!=-1):
 					ddc["@res:"] = line
 					dd["@res:"] = 1
+					continue
+				if(line.find("@duration:")!=-1):
+					ddc["@duration:"] = line
+					dd["@duration:"] = 1
 					flag = 1
 					continue
 	ticks = time.time()
@@ -73,7 +77,7 @@ def url_index_DB(data):
 	for i in range(len(data)):
 		if(i%5000==0):
 			count+=1
-		sSkipList.insert(data[i]["@url:"],"DB_{}.txt".format(count),data[i]["@url:"],data[i]["@title:"],data[i]["@content:"],data[i]["@viewCount:"],data[i]["@res:"],)
+		sSkipList.insert(data[i]["@url:"],"DB_{}.txt".format(count),data[i]["@url:"],data[i]["@title:"],data[i]["@content:"],data[i]["@viewCount:"],data[i]["@res:"],data[i]["@duration:"],)
 	ticks = time.time()
 	print("完成建立INDEX的時間")
 	print (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
